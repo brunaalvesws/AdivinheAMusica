@@ -1,97 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adivinhe a música</title>
-    <script src="./main.js"></script>
-    <link href="style.css" rel="stylesheet" type="text/css"/>
-  </head>
-  <body>
-    <div id="app">
-      <div class="container">
-        <div class="modal">
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Bem vindo(a) ao jogo Adivinhe a música!</h3> 
-            <p>Esse jogo é inspirado no jogo da forca, só que você deve adivinhar o nome de uma música de um artista que você segue no Spotify.</p>
-            <p>A dica é o nome do artista e você possui tentativas até montar o bonequinho completo na forca :p</p>
-            <p>Para dar um palpite, clique na letra desejada - ela ficará verde se estiver no nome da música ou vermelha caso não esteja. Para arriscar o nome da música, 
-              clique em 'adivinhar a música', digite seu palpite e aperte 'enviar palpite!', mas fique ligado que se você errar, perde o jogo!</p>
-              <p> Para rever essas orientações, clique no botão 'Como jogar?'</p>
-              <p> Projeto desenvolvido para o bootcamp de estagiários do Nubank</p>
-          </div>
-        </div>
-        <div id="login">
-          <h1>Adivinhe a música!</h1>
-          <h3>Antes de começar, faça login no Spotify para deixarmos o desafio a sua cara</h3>
-          <a href="https://adivinheamusicaapi.onrender.com/login" class="btn btn-primary"> Fazer Login no Spotify</a>
-        </div>
-        <br>
-        <div id="loggedin">
-          <div id="user-profile">
-          </div>
-          <div id="oauth">
-          </div>
-          <div id="guessgame" class="col-12">
-            <div class="col-3">
-              <button class="btn-open-modal btn-primary" id="openModal">Como jogar?</button>
-            </div>
-            <div id="forca-container">
-              <canvas id="forca" width="200" height="225"></canvas>
-            </div>
-            <div id="palavra" data-value="">
-            </div>
-            <div id="tip">
-            </div>
-            <div id="tries">
-              Suas tentativas:
-            </div>
-            <div id="restart">
-              <button id="replay" onclick="Restart()">Jogar novamente</button>
-            </div>
-            <div class="kb">
-              <textarea id="write" rows="4" cols="60"></textarea>
-              <ul id="keyboard">
-                  <button class="letter" id="q" onclick="Digitar('q')">q</button>
-                  <button class="letter" id="w" onclick="Digitar('w')">w</button>
-                  <button class="letter" id="e" onclick="Digitar('e')">e</button>
-                  <button class="letter" id="r" onclick="Digitar('r')">r</button>
-                  <button class="letter" id="t" onclick="Digitar('t')">t</button>
-                  <button class="letter" id="y" onclick="Digitar('y')">y</button>
-                  <button class="letter" id="u" onclick="Digitar('u')">u</button>
-                  <button class="letter" id="i" onclick="Digitar('i')">i</button>
-                  <button class="letter" id="o" onclick="Digitar('o')">o</button>
-                  <button class="letter" id="p" onclick="Digitar('p')">p</button>
-                  <button class="letter" id="a" onclick="Digitar('a')">a</button>
-                  <button class="letter" id="s" onclick="Digitar('s')">s</button>
-                  <button class="letter" id="d" onclick="Digitar('d')">d</button>
-                  <button class="letter" id="f" onclick="Digitar('f')">f</button>
-                  <button class="letter" id="g" onclick="Digitar('g')">g</button>
-                  <button class="letter" id="h" onclick="Digitar('h')">h</button>
-                  <button class="letter" id="j" onclick="Digitar('j')">j</button>
-                  <button class="letter" id="k" onclick="Digitar('k')">k</button>
-                  <button class="letter" id="l" onclick="Digitar('l')">l</button>
-                  <button class="letter" id="z" onclick="Digitar('z')">z</button>
-                  <button class="letter" id="x" onclick="Digitar('x')">x</button>
-                  <button class="letter" id="c" onclick="Digitar('c')">c</button>
-                  <button class="letter" id="v" onclick="Digitar('v')">v</button>
-                  <button class="letter" id="b" onclick="Digitar('b')">b</button>
-                  <button class="letter" id="n" onclick="Digitar('n')">n</button>
-                  <button class="letter" id="m" onclick="Digitar('m')">m</button>
-                  <button class="letter" id="ç" onclick="Digitar('ç')">ç</button>
-                  <button class="delete lastitem" onclick="Digitar('del')">delete</button>
-                  <button class="space lastitem" onclick="Digitar(' ')">space</button>
-                  <button id="guessbtn" class="guess lastitem" onclick="startguessing()">adivinhar a música</button>
-              </ul>
-          </div>
-          </div>
-          <button class="btn btn-default" id="obtain-new-token">Refresh</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adivinhe a música</title>
+  <script type="module" src="./main.js"></script>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <div class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h3>Bem vindo(a) ao jogo Adivinhe a música!</h3>
+          <p>Esse jogo é inspirado no jogo da forca, só que você deve adivinhar o nome de uma música de um artista que
+            você segue no Spotify.</p>
+          <p>A dica é o nome do artista e você possui tentativas até montar o bonequinho completo na forca :p</p>
+          <p>Para dar um palpite, clique na letra desejada - ela ficará verde se estiver no nome da música ou vermelha
+            caso não esteja. Para arriscar o nome da música,
+            clique em 'adivinhar a música', digite seu palpite e aperte 'enviar palpite!', mas fique ligado que se você
+            errar, perde o jogo!</p>
+          <p> Para rever essas orientações, clique no botão 'Como jogar?'</p>
+          <p> Projeto desenvolvido para o bootcamp de estagiários do Nubank</p>
         </div>
       </div>
-  
-      <script id="user-profile-template" type="text/x-handlebars-template">
+      <div id="login">
+        <h1>Adivinhe a música!</h1>
+        <h3>Antes de começar, faça login no Spotify para deixarmos o desafio a sua cara</h3>
+        <a href="https://adivinheamusicaapi.onrender.com/login" class="btn btn-primary"> Fazer Login no Spotify</a>
+      </div>
+      <br>
+      <div id="loggedin">
+        <div id="user-profile">
+        </div>
+        <div id="oauth">
+        </div>
+        <div id="guessgame" class="col-12">
+          <div class="col-3">
+            <button class="btn-open-modal btn-primary" id="openModal">Como jogar?</button>
+          </div>
+          <div id="forca-container">
+            <canvas id="forca" width="200" height="225"></canvas>
+          </div>
+          <div id="palavra" data-value="">
+          </div>
+          <div id="tip">
+          </div>
+          <div id="tries">
+            Suas tentativas:
+          </div>
+          <div id="restart">
+            <button id="replay" onclick="Restart()">Jogar novamente</button>
+          </div>
+          <div class="kb">
+            <textarea id="write" rows="4" cols="60"></textarea>
+            <ul id="keyboard">
+              <button class="letter" id="q" onclick="Digitar('q')">q</button>
+              <button class="letter" id="w" onclick="Digitar('w')">w</button>
+              <button class="letter" id="e" onclick="Digitar('e')">e</button>
+              <button class="letter" id="r" onclick="Digitar('r')">r</button>
+              <button class="letter" id="t" onclick="Digitar('t')">t</button>
+              <button class="letter" id="y" onclick="Digitar('y')">y</button>
+              <button class="letter" id="u" onclick="Digitar('u')">u</button>
+              <button class="letter" id="i" onclick="Digitar('i')">i</button>
+              <button class="letter" id="o" onclick="Digitar('o')">o</button>
+              <button class="letter" id="p" onclick="Digitar('p')">p</button>
+              <button class="letter" id="a" onclick="Digitar('a')">a</button>
+              <button class="letter" id="s" onclick="Digitar('s')">s</button>
+              <button class="letter" id="d" onclick="Digitar('d')">d</button>
+              <button class="letter" id="f" onclick="Digitar('f')">f</button>
+              <button class="letter" id="g" onclick="Digitar('g')">g</button>
+              <button class="letter" id="h" onclick="Digitar('h')">h</button>
+              <button class="letter" id="j" onclick="Digitar('j')">j</button>
+              <button class="letter" id="k" onclick="Digitar('k')">k</button>
+              <button class="letter" id="l" onclick="Digitar('l')">l</button>
+              <button class="letter" id="z" onclick="Digitar('z')">z</button>
+              <button class="letter" id="x" onclick="Digitar('x')">x</button>
+              <button class="letter" id="c" onclick="Digitar('c')">c</button>
+              <button class="letter" id="v" onclick="Digitar('v')">v</button>
+              <button class="letter" id="b" onclick="Digitar('b')">b</button>
+              <button class="letter" id="n" onclick="Digitar('n')">n</button>
+              <button class="letter" id="m" onclick="Digitar('m')">m</button>
+              <button class="letter" id="ç" onclick="Digitar('ç')">ç</button>
+              <button class="delete lastitem" onclick="Digitar('del')">delete</button>
+              <button class="space lastitem" onclick="Digitar(' ')">space</button>
+              <button id="guessbtn" class="guess lastitem" onclick="startguessing()">adivinhar a música</button>
+            </ul>
+          </div>
+        </div>
+        <button class="btn btn-default" id="obtain-new-token">Refresh</button>
+      </div>
+    </div>
+
+    <script id="user-profile-template" type="text/x-handlebars-template">
         <h3>Logado como {{display_name}}</h3>
         <div class="media">
           <div class="pull-left">
@@ -99,8 +104,9 @@
           </div>
         </div>
       </script>
-      <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
-      <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    </div>
-  </body>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.1/handlebars.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  </div>
+</body>
+
 </html>
