@@ -109,4 +109,159 @@
   </div>
 </body>
 
+<script>
+  //funcionamento do teclado
+
+  var guessing = false;
+
+  function Digitar(letra) {
+    if (letra != " ") {
+      if ($(`#${letra}`).hasClass("disable")) return false;
+    }
+
+    var txtarea = document.getElementById("write")
+    var html = txtarea.value;
+
+    if (!guessing) {
+      tryLetter(letra);
+      return false;
+    } else if (letra === "del") {
+      txtarea.value = html.substr(0, html.length - 1);
+      return false;
+    } else if (guessing) {
+      txtarea.value = txtarea.value + letra;
+    }
+
+  };
+
+  //mecanica do jogo
+
+  var letterWrong = []
+  var hangman = [head, body, leftArm, rightArm, leftLeg, rightLeg]
+
+  function tryLetter(letra) {
+    var $guess = $('#palavra');
+    var $tries = $('#tries');
+    var tried = $tries.html();
+    var answer = $guess.attr("data-value")
+    var update = ""
+    var decodedAnswer = $guess.html();
+    var restart = document.getElementById("restart")
+
+    if (answer.toLowerCase().includes(letra)) {
+      for (var i = 0; i < answer.length; i++) {
+        if (answer[i].toLowerCase() === letra) {
+          update = update + answer[i]
+        } else {
+          update = update + decodedAnswer[i]
+        }
+      }
+      $guess.html(update)
+      $tries.html(tried + " " + letra)
+      $(`#${letra}`).addClass("disable");
+      $(`#${letra}`).css("background-color", "green");
+      if (!update.includes("_")) {
+        restart.style.display = "flex";
+        alert("Você ganhou!")
+      }
+    } else {
+      if (!letterWrong.includes(letra)) {
+        letterWrong.push(letra)
+        $tries.html(tried + " " + letra)
+        $(`#${letra}`).addClass("disable");
+        $(`#${letra}`).css("background-color", "#e93d3d");
+        hangman[(letterWrong.length - 1)]()
+        if (letterWrong.length === 6) {
+          alert("Você perdeu! A resposta era " + answer)
+          restart.style.display = "flex";
+        }
+      }
+    }
+  }
+
+  function guess() {
+    var txtarea = document.getElementById("write")
+    var $guess = $('#palavra');
+    var answer = $guess.attr("data-value")
+    if (txtarea.value === answer.toLowerCase()) {
+      alert("Você ganhou!")
+    } else {
+      var hangmanLose = [head(), body(), leftArm(), rightArm(), leftLeg(), rightLeg()]
+      alert("Você perdeu! A resposta era " + answer)
+    }
+    var restart = document.getElementById("restart")
+    restart.style.display = "flex";
+  }
+
+  function startguessing() {
+    if (!guessing) {
+      $("#write").show();
+      var guessbtn = document.getElementById("guessbtn")
+      guessbtn.innerHTML = "enviar palpite!"
+      var letras = document.getElementsByClassName("letter");
+      console.log(letras)
+      Array.from(letras).forEach(element => {
+        element.classList.remove("disable");
+      });
+      guessing = true;
+    } else {
+      guess()
+    }
+  }
+
+
+  function head() {
+    const canvas = document.getElementById("forca");
+    const context = canvas.getContext("2d");
+    context.lineWidth = 5;
+    context.beginPath();
+    context.arc(100, 45, 20, 0, Math.PI * 2, true);
+    context.closePath();
+    context.stroke();
+  }
+
+  function body() {
+    const canvas = document.getElementById("forca");
+    const context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(100, 65);
+    context.lineTo(100, 130);
+    context.stroke();
+  }
+
+  function rightArm() {
+    const canvas = document.getElementById("forca");
+    const context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(100, 75);
+    context.lineTo(60, 100);
+    context.stroke();
+  }
+  function leftArm() {
+    const canvas = document.getElementById("forca");
+    const context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(100, 75);
+    context.lineTo(140, 100);
+    context.stroke();
+  }
+
+  function rightLeg() {
+    const canvas = document.getElementById("forca");
+    const context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(100, 130);
+    context.lineTo(80, 190);
+    context.stroke();
+  }
+  function leftLeg() {
+    const canvas = document.getElementById("forca");
+    const context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(100, 130);
+    context.lineTo(125, 190);
+    context.stroke();
+  }
+</script>
+
 </html>
