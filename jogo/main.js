@@ -73,11 +73,6 @@ async function showMusica(access_token) {
   setModal();
 }
 
-
-function Restart() {
-  window.location.reload()
-}
-
 function setModal() {
   var modal = document.querySelector(".modal");
   var btn = document.querySelector(".btn-open-modal");
@@ -108,12 +103,8 @@ window.onload = () => {
     var hashParams = {};
     var e, r = /[?&]([^=&]+)=([^&]+)/g,
       q = window.location.href.substring(1);
-    console.log(e)
-    console.log(r)
-    console.log(q)
 
     while (e = r.exec(q)) {
-      console.log(e);
       hashParams[e[1]] = decodeURIComponent(e[2]);
     }
     return hashParams;
