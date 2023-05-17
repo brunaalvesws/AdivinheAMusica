@@ -162,6 +162,7 @@
       $(`#${letra}`).css("background-color", "green");
       if (!update.includes("_")) {
         restart.style.display = "flex";
+        setTimeout(1000);
         alert("Você ganhou!")
       }
     } else {
@@ -172,6 +173,8 @@
         $(`#${letra}`).css("background-color", "#e93d3d");
         hangman[(letterWrong.length - 1)]()
         if (letterWrong.length === 6) {
+          $guess.html = answer;
+          setTimeout(1000);
           alert("Você perdeu! A resposta era " + answer)
           restart.style.display = "flex";
         }
@@ -184,9 +187,13 @@
     var $guess = $('#palavra');
     var answer = $guess.attr("data-value")
     if (txtarea.value === answer.toLowerCase()) {
+      $guess.html = answer
+      setTimeout(1000);
       alert("Você ganhou!")
     } else {
       var hangmanLose = [head(), body(), leftArm(), rightArm(), leftLeg(), rightLeg()]
+      $guess.html = answer;
+      setTimeout(1000);
       alert("Você perdeu! A resposta era " + answer)
     }
     var restart = document.getElementById("restart")
