@@ -189,7 +189,7 @@
       setTimeout(() => alert("Você ganhou!"), 1000);
     } else {
       var hangmanLose = [head(), body(), leftArm(), rightArm(), leftLeg(), rightLeg()]
-      $$guess.html(answer);
+      $guess.html(answer);
       setTimeout(() => alert("Você perdeu! A resposta era " + answer), 1000);
     }
     var restart = document.getElementById("restart")
