@@ -16,10 +16,10 @@ function Digitar(letra) {
   } else if (letra === "del") {
     txtarea.value = html.substr(0, html.length - 1);
     return false;
-  } else if (guessing){
+  } else if (guessing) {
     txtarea.value = txtarea.value + letra;
   }
-  
+
 };
 
 //mecanica do jogo
@@ -36,30 +36,30 @@ function tryLetter(letra) {
   var decodedAnswer = $guess.html();
   var restart = document.getElementById("restart")
 
-  if (answer.toLowerCase().includes(letra)){
+  if (answer.toLowerCase().includes(letra)) {
     for (var i = 0; i < answer.length; i++) {
-      if (answer[i].toLowerCase()===letra){
+      if (answer[i].toLowerCase() === letra) {
         update = update + answer[i]
       } else {
         update = update + decodedAnswer[i]
       }
     }
     $guess.html(update)
-    $tries.html(tried+" "+letra)
+    $tries.html(tried + " " + letra)
     $(`#${letra}`).addClass("disable");
     $(`#${letra}`).css("background-color", "green");
-    if (!update.includes("_")){
+    if (!update.includes("_")) {
       restart.style.display = "flex";
       alert("Você ganhou!")
     }
   } else {
     if (!letterWrong.includes(letra)) {
       letterWrong.push(letra)
-      $tries.html(tried+" "+letra)
+      $tries.html(tried + " " + letra)
       $(`#${letra}`).addClass("disable");
       $(`#${letra}`).css("background-color", "#e93d3d");
-      hangman[(letterWrong.length-1)]()
-      if (letterWrong.length === 6){
+      hangman[(letterWrong.length - 1)]()
+      if (letterWrong.length === 6) {
         alert("Você perdeu! A resposta era " + answer)
         restart.style.display = "flex";
       }
@@ -67,22 +67,22 @@ function tryLetter(letra) {
   }
 }
 
-function guess () {
+function guess() {
   var txtarea = document.getElementById("write")
   var $guess = $('#palavra');
   var answer = $guess.attr("data-value")
   if (txtarea.value === answer.toLowerCase()) {
     alert("Você ganhou!")
   } else {
-    var hangmanLose = [head(), body(), leftArm(), rightArm(), leftLeg(), rightLeg()]  
+    var hangmanLose = [head(), body(), leftArm(), rightArm(), leftLeg(), rightLeg()]
     alert("Você perdeu! A resposta era " + answer)
   }
   var restart = document.getElementById("restart")
   restart.style.display = "flex";
 }
 
-function startguessing () {
-  if (!guessing){
+function startguessing() {
+  if (!guessing) {
     $("#write").show();
     var guessbtn = document.getElementById("guessbtn")
     guessbtn.innerHTML = "enviar palpite!"
@@ -112,7 +112,7 @@ async function getArtists(access_token) {
   var artist = artists.artists.items[getRandom]
   var artistName = artist.name
   var songName = await getArtistsInfo(access_token, artist.id)
-  return {"song":songName, "artist":artistName}
+  return { "song": songName, "artist": artistName }
 }
 
 async function getArtistsInfo(access_token, id) {
@@ -206,7 +206,7 @@ function suporte() {
 
 //funções que montam a tela inicial
 
-function decodeMusic (string) {
+function decodeMusic(string) {
   var decoded = ""
   for (var i = 0; i < string.length; i++) {
     (string[i] === " ") ? decoded = decoded + "-" : decoded = decoded + "_";
@@ -226,25 +226,25 @@ async function showMusica(access_token) {
 }
 
 
-function Restart () {
+function Restart() {
   window.location.reload()
 }
 
-function setModal () {
+function setModal() {
   var modal = document.querySelector(".modal");
   var btn = document.querySelector(".btn-open-modal");
   var span = document.querySelector(".close");
   modal.style.display = "block";
 
-  btn.onclick = function() {
+  btn.onclick = function () {
     modal.style.display = "block";
   }
 
-  span.onclick = function() {
+  span.onclick = function () {
     modal.style.display = "none";
   }
 
-  window.onclick = function(event) {
+  window.onclick = function (event) {
     if (event.target == modal) {
       modal.style.display = "none";
     }
@@ -252,66 +252,71 @@ function setModal () {
 }
 
 window.onload = () => {
-    /**
-     * Obtains parameters from the hash of the URL
-     * @return Object
-     */
-    function getHashParams() {
+  /**
+   * Obtains parameters from the hash of the URL
+   * @return Object
+   */
+  function getHashParams() {
     var hashParams = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-        hashParams[e[1]] = decodeURIComponent(e[2]);
+    var e, r = /[?&]([^=&]+)=([^&]+)/g,
+      q = window.location.href.substring(1);
+    console.log(e)
+    console.log(r)
+    console.log(q)
+
+    while (e = r.exec(q)) {
+      console.log(e);
+      hashParams[e[1]] = decodeURIComponent(e[2]);
     }
     return hashParams;
+  }
+
+  var userProfileSource = document.getElementById('user-profile-template').innerHTML,
+    userProfileTemplate = Handlebars.compile(userProfileSource),
+    userProfilePlaceholder = document.getElementById('user-profile');
+
+  var params = getHashParams();
+
+  var access_token = params.access_token,
+    refresh_token = params.refresh_token,
+    error = params.error;
+
+  if (error) {
+    alert('There was an error during the authentication');
+  } else {
+    if (access_token) {
+      $.ajax({
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        },
+        success: function (response) {
+          userProfilePlaceholder.innerHTML = userProfileTemplate(response);
+
+          $('#login').hide();
+          $('#loggedin').show();
+          $('#guessgame').show();
+          showMusica(access_token)
+          suporte()
+        }
+      });
+    } else {
+      // render initial screen
+      $('#login').show();
+      $('#loggedin').hide();
+      $('#guessgame').hide();
+      $('#restart').hide();
     }
 
-    var userProfileSource = document.getElementById('user-profile-template').innerHTML,
-        userProfileTemplate = Handlebars.compile(userProfileSource),
-        userProfilePlaceholder = document.getElementById('user-profile');
-
-    var params = getHashParams();
-
-    var access_token = params.access_token,
-        refresh_token = params.refresh_token,
-        error = params.error;
-
-    if (error) {
-      alert('There was an error during the authentication');
-    } else {
-        if (access_token) {
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me',
-                headers: {
-                'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                userProfilePlaceholder.innerHTML = userProfileTemplate(response);
-
-                  $('#login').hide();
-                  $('#loggedin').show();
-                  $('#guessgame').show();
-                  showMusica(access_token)
-                  suporte()
-                }
-            });
-        } else {
-            // render initial screen
-            $('#login').show();
-            $('#loggedin').hide();
-            $('#guessgame').hide();
-            $('#restart').hide();
+    document.getElementById('obtain-new-token').addEventListener('click', function () {
+      $.ajax({
+        url: '/refresh_token',
+        data: {
+          'refresh_token': refresh_token
         }
-
-      document.getElementById('obtain-new-token').addEventListener('click', function() {
-          $.ajax({
-          url: '/refresh_token',
-          data: {
-              'refresh_token': refresh_token
-          }
-          }).done(function(data) {
-          access_token = data.access_token;
-          });
-      }, false);
-      }
+      }).done(function (data) {
+        access_token = data.access_token;
+      });
+    }, false);
+  }
 };
